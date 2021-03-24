@@ -1,0 +1,22 @@
+{
+  "name": "rb-web-components-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@rbmh-design-system/base-styles": "^2.1.0",
+    "@rbmh-design-system/web-components": "^2.1.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "sanitize.css": "^12.0.1"
+  },
+  "devDependencies": {
+    "serve": "^11.3.2"
+  },
+  "scripts": {
+    "start": "npx serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
