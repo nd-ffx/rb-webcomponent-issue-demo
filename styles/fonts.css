@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Bull';
+  font-weight: normal;
+  font-style: normal;
+  src: url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Regular.woff2') format('woff2'), url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Regular.woff') format('woff'),
+    url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Bull';
+  font-weight: 500;
+  font-style: normal;
+  src: url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Medium.woff2') format('woff2'), url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Medium.woff') format('woff'),
+    url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Bull';
+  font-weight: bold;
+  font-style: normal;
+  src: url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Bold.woff2') format('woff2'), url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Bold.woff') format('woff'), url('https://resources.redbull.com/fonts/bull-text/v1/full/BullText-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Bull Icons';
+  src: url('https://resources.redbull.com/icons/backend/v1/rb-backend-icons.woff') format('woff'), url('https://resources.redbull.com/icons/backend/v1/rb-backend-icons.tff') format('truetype');
+}
+
+body {
+  font-family: Bull;
+}

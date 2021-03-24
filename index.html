@@ -1,0 +1,140 @@
+<!doctype html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="./styles/sanitize.css">
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <script type="module">
+      import {
+        applyPolyfills,
+        defineCustomElements
+      } from './node_modules/@rbmh-design-system/web-components/loader/index.es2017.js'
+      applyPolyfills().then(() => {
+        defineCustomElements(window)
+      })
+    </script>
+
+    <script>
+      // Globals and global-fns
+      let dummyOptionsDropdowns = [
+        'country-dropdown',
+        'language-dropdown',
+        'account-type-dropdown',
+        'opt-status-dropdown',
+        'company-dropdown',
+        'publication-company-dropdown'
+      ]
+      let moreFiltersDropdowns = [
+        'interests-dropdown',
+        'topics-dropdown'
+      ]
+      const createDummyOption = (id, count) => ({
+        id: `${id.replace('-dropdown', '-value')}-${count}`,
+        label: `${id.replace('-dropdown', '-value').replaceAll('-', ' ')} ${count}`
+      })
+      const dummyOptionsGen = (id, count = 5) => {
+        const dummyOptions = []
+        for (let i = 0; i < count; i++) {
+          dummyOptions.push(createDummyOption(id, i))
+        }
+        return dummyOptions
+      }
+      const getOptionLabel = id => id.charAt(0).toUpperCase() + id.replace('-dropdown', '').slice(1)
+
+      function init() {
+        updateDom()
+        // Initialize Dropdowns with options
+        dummyOptionsDropdowns.forEach(id => {
+          const dropdown = document.getElementById(id)
+          const options = dummyOptionsGen(id)
+          dropdown.options = options
+        })
+
+        // Initialize More Filters Dropdown:
+        if (moreFiltersDropdowns.length) {
+          const moreFiltersDropdown = document.getElementById('more-filters-dropdown')
+          const moreFiltersOptions = moreFiltersDropdowns.map(id => ({
+            id,
+            label: getOptionLabel(id),
+            sublevel: {
+              multiSelect: true,
+              options: dummyOptionsGen(id, 10),
+              queryType: 'filter',
+              selectionBehavior: 'multi'
+            }
+          }))
+          moreFiltersDropdown.options = moreFiltersOptions
+        }
+      }
+
+      function renderDropdown(id) {
+        return `<rb-text-anchored-dropdown anchor-id="${id}-anchor" id="${id}" label="${getOptionLabel(id)}" mode="dark" query-type="filter" max-height="420" width="auto" scroll-end-offset="1" selection-behavior="multi" class="hydrated" style="display: block; margin-right: 32px; width: 160px;">
+        </rb-text-anchored-dropdown>`
+      }
+
+      function updateDom() {
+        const inplaceFilters = dummyOptionsDropdowns.map(renderDropdown).join('\n')
+        document.getElementById('inplace-filters').innerHTML = inplaceFilters
+        const moreFiltersDropdown = document.getElementById('more-filters-dropdown')
+        if (!moreFiltersDropdown && moreFiltersDropdowns.length) {
+          document.getElementById('more-filters').innerHTML = `<rb-text-anchored-dropdown anchor-id="more-filters-dropdown-anchor" id="more-filters-dropdown" label="More filters" mode="dark" max-height="420" width="auto" scroll-end-offset="1" selection-behavior="single" class="hydrated" style="width: 160px;">
+          </rb-text-anchored-dropdown>`
+        }
+        if (moreFiltersDropdown && !moreFiltersDropdowns.length) {
+          document.getElementById('more-filters').innerHTML = ''
+        }
+      }
+
+      function moveItemsIntoMoreFilters(count = 1) {
+        const moveValue = Math.max(0, dummyOptionsDropdowns.length - count)
+        const movingDropdowns = dummyOptionsDropdowns.slice(moveValue)
+        dummyOptionsDropdowns = dummyOptionsDropdowns.slice(0, moveValue)
+        moreFiltersDropdowns = [
+          ...movingDropdowns,
+          ...moreFiltersDropdowns
+        ]
+        init()
+      }
+      function moveItemsOutOfMoreFilters(count = 1) {
+        const moveValue = Math.max(0, moreFiltersDropdowns.length - count)
+        const movingDropdowns = moreFiltersDropdowns.slice(0, count)
+        moreFiltersDropdowns = moreFiltersDropdowns.slice(count)
+        dummyOptionsDropdowns = [
+          ...dummyOptionsDropdowns,
+          ...movingDropdowns
+        ]
+        init()
+      }
+    </script>
+
+    <style>
+      #app {
+        /* will-change: transform; */
+      }
+      .container {
+        display: flex;
+        flex: 1;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body onload="init();">
+    <div id="app">
+      <div class="container">
+        <rb-search-filter-bar placeholder="I am the placeholder" value="" class="hydrated">
+          <div id="inplace-filters" class="container">
+            <rb-loading></rb-loading>
+          </div>
+          <div id="more-filters" class="container">
+            <rb-loading></rb-loading>
+          </div>
+        </rb-search-filter-bar>
+      </div>
+      <div class="container">anything</div>
+      <div class="container">
+        <rb-button type="secondary" onclick="moveItemsIntoMoreFilters();">Move Item into More Filters</rb-button>
+        <rb-button type="secondary" onclick="moveItemsOutOfMoreFilters();">Move Item out of More Filters</rb-button>
+      </div>
+    </div>
+  </body>
+</html>
